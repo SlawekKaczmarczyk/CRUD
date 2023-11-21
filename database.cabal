@@ -1,10 +1,10 @@
 cabal-version:       >= 1.10
-name:                mydatabaseproject
+name:                database
 version:             0.1.0.0
 build-type:          Simple
 
-executable mydatabaseproject-exe
-  main-is:             Main.hs
+executable database-exe
+  main-is:             app/Main.hs
   build-depends:       base >= 4.7 && < 5
                      , persistent
                      , persistent-sqlite
