@@ -7,6 +7,7 @@ import Database.Persist.Sqlite
 import Database.Persist.TH
 import System.Exit (exitSuccess)
 
+import Lib -- Import module containing CRUD
 
 main :: IO ()
 main = do
