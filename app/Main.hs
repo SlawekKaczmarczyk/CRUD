@@ -14,6 +14,9 @@ main = do
   putStrLn "Witaj w aplikacji zarządzającej bazą danych!"
 
 
-printPerson :: Entity Person -> IO ()
+printPerson :: Entity Person -> IO () --Print one person
 printPerson (Entity personId person) =
   putStrLn $ show personId ++ ": " ++ show person
+
+printPeople :: [Entity Person] -> IO () -- Print list of people
+printPeople people = mapM_ printPerson people
