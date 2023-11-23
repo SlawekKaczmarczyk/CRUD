@@ -12,3 +12,8 @@ import Lib -- Import module containing CRUD
 main :: IO ()
 main = do
   putStrLn "Witaj w aplikacji zarządzającej bazą danych!"
+
+
+printPerson :: Entity Person -> IO ()
+printPerson (Entity personId person) =
+  putStrLn $ show personId ++ ": " ++ show person
