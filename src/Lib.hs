@@ -32,8 +32,8 @@ initDb = runSqlite ":memory:" $ do
 -- CRUD operations
 
 -- Adding person to database
-insertPerson :: Person -> SqlPersistT IO (Key Person)
-insertPerson = insert 
+insertPerson :: String -> Int -> SqlPersistT IO (Key Person)
+insertPerson name age = insert $ Person name age
 
 -- Retrieving all people from the database
 getPeople :: SqlPersistT IO [Entity Person]
