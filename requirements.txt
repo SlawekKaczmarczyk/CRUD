@@ -1,3 +1,0 @@
-init
-update
-install persistent persistent-sqlite hunit
