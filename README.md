@@ -5,9 +5,10 @@ A simple database management system that will allow users to perform CRUD (Creat
 
 
 Install dependencies
+```
+#cabal init
 
-cabal init
+#cabal update
 
-cabal update
-
-cabal install persistent persistent-sqlite hunit 
+#cabal install persistent persistent-sqlite hunit
+```
