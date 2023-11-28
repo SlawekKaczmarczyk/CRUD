@@ -28,8 +28,7 @@ menu = do
   liftIO $ putStr "Your Choice: "
   option <- liftIO getLine
   case option of
-    "1" -> do
-      liftIO $ putStrLn "Not Yet:"
+    "1" -> insertPerson >> menu
     "2" -> do
       liftIO $ putStrLn "Still to do:"
       menu

@@ -1,7 +1,8 @@
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
@@ -11,39 +12,66 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-module Lib where
+module Lib
+    ( createRecord
+    , readRecord
+    , updateRecord
+    , deleteRecord
+    , runDb
+    ) where
 
-import Database.Persist
-import Database.Persist.Sqlite
+
+import Database.Persist.Class
+import Database.Persist.Sql (toSqlKey,SqlPersistT, runMigration)
+import Database.Persist.Sqlite 
 import Database.Persist.TH
+import Control.Monad.IO.Class (liftIO)
+import Control.Monad.Logger (NoLoggingT)
+import Control.Monad.Trans.Resource (ResourceT)
+import qualified Data.Text as T
 
--- Data structure definition
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
-Person
-    name String
-    age Int
+Record
+    value String
     deriving Show
 |]
 
-initDb :: IO ()
-initDb = runSqlite ":memory:" $ do
-  runMigration migrateAll
+-- SQLite database file
+databaseFile :: T.Text
+databaseFile = T.pack "database.sqlite"
 
--- CRUD operations
+-- Function to run database actions
+runDb :: SqlPersistT (NoLoggingT (ResourceT IO)) a -> IO a
+runDb action = runSqlite databaseFile $ do
+    runMigration migrateAll
+    action
 
--- Adding person to database
-insertPerson :: String -> Int -> SqlPersistT IO (Key Person)
-insertPerson name age = insert $ Person name age
+createRecord :: IO ()
+createRecord = do
+    putStrLn "Enter value for the new record: "
+    value <- getLine
+    _ <- liftIO $ runDb $ insert $ Record value
+    putStrLn "Record created successfully."
 
--- Retrieving all people from the database
-getPeople :: SqlPersistT IO [Entity Person]
-getPeople = selectList [] []
+readRecord :: IO ()
+readRecord = do
+    records <- runDb $ selectList [] []
+    putStrLn "Records:"
+    mapM_ (\(Entity recordId record) -> putStrLn $ "ID: " ++ show recordId ++ ", Value: " ++ recordValue record) records
 
--- Update person's data in the database
-updatePerson :: Key Person -> Person -> SqlPersistT IO ()
-updatePerson personId updatedPerson = do
-  update personId [PersonName =. personName updatedPerson, PersonAge =. personAge updatedPerson]
+updateRecord :: IO ()
+updateRecord = do
+    putStrLn "Enter the ID of the record to update: "
+    recordIdStr <- getLine
+    let recordId = read recordIdStr :: Key Record
+    putStrLn "Enter the new value: "
+    newValue <- getLine
+    _ <- liftIO $ runDb $ update recordId [RecordValue =. newValue]
+    putStrLn "Record updated successfully."
 
--- Delete a person from the database
-detelePerson :: Key Person -> SqlPersistT IO ()
-detelePerson personId = delete personId
+deleteRecord :: IO ()
+deleteRecord = do
+    putStrLn "Enter the ID of the record to delete: "
+    recordIdStr <- getLine
+    let recordId = read recordIdStr :: Key Record
+    _ <- liftIO $ runDb $ delete recordId
