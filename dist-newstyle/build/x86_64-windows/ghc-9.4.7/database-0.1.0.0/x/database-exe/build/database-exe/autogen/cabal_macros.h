@@ -20,6 +20,16 @@
   (major1) == 4 && (major2) <  17 || \
   (major1) == 4 && (major2) == 17 && (minor) <= 2)
 #endif /* MIN_VERSION_base */
+/* package monad-logger-0.3.40 */
+#ifndef VERSION_monad_logger
+#define VERSION_monad_logger "0.3.40"
+#endif /* VERSION_monad_logger */
+#ifndef MIN_VERSION_monad_logger
+#define MIN_VERSION_monad_logger(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  3 || \
+  (major1) == 0 && (major2) == 3 && (minor) <= 40)
+#endif /* MIN_VERSION_monad_logger */
 /* package persistent-2.14.6.0 */
 #ifndef VERSION_persistent
 #define VERSION_persistent "2.14.6.0"
@@ -40,6 +50,26 @@
   (major1) == 2 && (major2) <  13 || \
   (major1) == 2 && (major2) == 13 && (minor) <= 2)
 #endif /* MIN_VERSION_persistent_sqlite */
+/* package resourcet-1.3.0 */
+#ifndef VERSION_resourcet
+#define VERSION_resourcet "1.3.0"
+#endif /* VERSION_resourcet */
+#ifndef MIN_VERSION_resourcet
+#define MIN_VERSION_resourcet(major1,major2,minor) (\
+  (major1) <  1 || \
+  (major1) == 1 && (major2) <  3 || \
+  (major1) == 1 && (major2) == 3 && (minor) <= 0)
+#endif /* MIN_VERSION_resourcet */
+/* package text-2.0.2 */
+#ifndef VERSION_text
+#define VERSION_text "2.0.2"
+#endif /* VERSION_text */
+#ifndef MIN_VERSION_text
+#define MIN_VERSION_text(major1,major2,minor) (\
+  (major1) <  2 || \
+  (major1) == 2 && (major2) <  0 || \
+  (major1) == 2 && (major2) == 0 && (minor) <= 2)
+#endif /* MIN_VERSION_text */
 
 /* tool gcc-14.0.6 */
 #ifndef TOOL_VERSION_gcc

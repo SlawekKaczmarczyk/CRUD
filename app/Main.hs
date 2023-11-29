@@ -7,36 +7,26 @@ import Database.Persist.Sqlite (runSqlite, runMigration, SqlPersistT)
 import Database.Persist.TH
 import System.Exit (exitSuccess)
 
-import Lib -- Import module containing CRUD
+import Lib (createRecord, readRecord, updateRecord, deleteRecord, runDb)
 
 main :: IO ()
 main = do
-  putStrLn "Welcome to database management system!"
-  runSqlite ":memory:" $ do
-    runMigration migrateAll
-    liftIO $ menu
-
+    putStrLn "Database Management System"
+    menu
 
 menu :: IO ()
 menu = do
-  liftIO $ putStrLn "Choose option:"
-  liftIO $ putStrLn "1. Add Person"
-  liftIO $ putStrLn "2. Show All Aeople"
-  liftIO $ putStrLn "3. Update Person's Data"
-  liftIO $ putStrLn "4. Delete Person"
-  liftIO $ putStrLn "5. End"
-  liftIO $ putStr "Your Choice: "
-  option <- liftIO getLine
-  case option of
-    "1" -> insertPerson >> menu
-    "2" -> do
-      liftIO $ putStrLn "Still to do:"
-      menu
-
-
-printPerson :: Entity Person -> IO () --Print one person
-printPerson (Entity personId person) =
-  putStrLn $ show personId ++ ": " ++ show person
-
-printPeople :: [Entity Person] -> IO () -- Print list of people
-printPeople people = mapM_ printPerson people
+    putStrLn "1. Create record"
+    putStrLn "2. Read record"
+    putStrLn "3. Update record"
+    putStrLn "4. Delete record"
+    putStrLn "5. Exit"
+    putStrLn "Choose an option: "
+    option <- getLine
+    case option of
+        "1" -> createRecord >> menu
+        "2" -> readRecord >> menu
+        "3" -> updateRecord >> menu
+        "4" -> deleteRecord >> menu
+        "5" -> putStrLn "Goodbye!"
+        _   -> putStrLn "Invalid option. Try again." >> menu

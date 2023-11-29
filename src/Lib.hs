@@ -75,3 +75,4 @@ deleteRecord = do
     recordIdStr <- getLine
     let recordId = read recordIdStr :: Key Record
     _ <- liftIO $ runDb $ delete recordId
+    putStrLn "Record deleted successfully."
